@@ -29,7 +29,7 @@ const Starship = `#graphql
 
   type Query {
     allStarships: Starships
-    person(id: Int!): Starship
+    starship(id: Int!): Starship
   }
 `;
 
