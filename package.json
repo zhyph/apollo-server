@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rm -rf dist",
+    "build:vercel": "npm run clean && tsc && npm start",
+    "build": "npm run clean && tsc",
     "dev": "npx nodemon src/index.ts",
     "start": "node dist/index.js"
   },
