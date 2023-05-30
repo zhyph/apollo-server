@@ -29,16 +29,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
-  "/graphql",
+  "/",
   expressMiddleware<IContext>(server, {
     context: async () => ({ swapiAPI }),
   }),
 );
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 
 app.listen(port, () => {
   console.log(`🚀 Server ready at http://localhost:${port}`);
-  console.log(`🚀 Server ready at http://localhost:${port}/graphql`);
 });
