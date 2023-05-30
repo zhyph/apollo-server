@@ -27,7 +27,7 @@ const Person = `#graphql
 
   type Query {
     person(id: Int!): Person
-    allPeople: AllPeople
+    allPeople(page: Int): AllPeople
   } 
 `;
 

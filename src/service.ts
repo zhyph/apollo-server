@@ -1,6 +1,6 @@
-import { RESTDataSource } from '@apollo/datasource-rest';
+import { RESTDataSource } from "@apollo/datasource-rest";
 
-export const BASE_URL = 'https://swapi.dev/api/';
+export const BASE_URL = "https://swapi.dev/api/";
 
 export default class SwapiAPI extends RESTDataSource {
   constructor() {
@@ -8,8 +8,8 @@ export default class SwapiAPI extends RESTDataSource {
     this.baseURL = BASE_URL;
   }
 
-  async allPeople() {
-    return await this.get('people');
+  async allPeople(page: number = 1) {
+    return await this.get(`people?page=${page}`);
   }
 
   async person(id: number) {
@@ -17,7 +17,7 @@ export default class SwapiAPI extends RESTDataSource {
   }
 
   async allStarships() {
-    return await this.get('starships');
+    return await this.get("starships");
   }
 
   async starship(id: number) {
