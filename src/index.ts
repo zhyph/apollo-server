@@ -15,32 +15,30 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
-const bootstrapServer = async () => {
-  const server = new ApolloServer<IContext>({
-    typeDefs,
-    resolvers,
-    introspection: true,
-  });
+const server = new ApolloServer<IContext>({
+  typeDefs,
+  resolvers,
+  introspection: true,
+});
 
-  await server.start();
+await server.start();
 
-  app.use(cors());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(
-    "/graphql",
-    expressMiddleware<IContext>(server, {
-      context: async () => ({ swapiAPI: new SwapiAPI() }),
-    }),
-  );
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
+const swapiAPI = new SwapiAPI();
 
-  app.listen(port, () => {
-    console.log(`🚀 Server ready at http://localhost:${port}`);
-    console.log(`🚀 Server ready at http://localhost:${port}/graphql`);
-  });
-};
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  "/graphql",
+  expressMiddleware<IContext>(server, {
+    context: async () => ({ swapiAPI }),
+  }),
+);
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
 
-bootstrapServer();
+app.listen(port, () => {
+  console.log(`🚀 Server ready at http://localhost:${port}`);
+  console.log(`🚀 Server ready at http://localhost:${port}/graphql`);
+});

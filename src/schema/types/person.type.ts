@@ -8,11 +8,11 @@ const Person = `#graphql
     eye_color: String
     birth_year: String
     gender: String
-    homeworld: String
+    homeworld: Planet
     created: String
     edited: String
     url: String
-    starships: [String]
+    starships: [Starship]
     vehicles: [String]
     species: [String]
     films: [String]
