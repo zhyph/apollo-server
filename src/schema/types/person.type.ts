@@ -19,6 +19,7 @@ const Person = `#graphql
   }
 
   type AllPeople {
+    isCached: Boolean  
     count: Int
     next: String
     previous: String

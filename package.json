@@ -1,33 +1,40 @@
 {
-  "name": "graphql-server-example",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "clean": "rm -rf dist",
-    "build:vercel": "npm run clean && tsc && npm start",
-    "build": "npm run clean && tsc",
-    "dev": "npx nodemon src/index.ts",
-    "start": "node dist/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
-  "dependencies": {
-    "@apollo/datasource-rest": "^6.0.0",
-    "@apollo/server": "^4.7.1",
-    "@graphql-tools/merge": "9.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "graphql": "^16.6.0"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.13",
-    "@types/node": "^20.2.5",
-    "nodemon": "^2.0.22",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.0.4"
-  }
+	"name": "graphql-server-example",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build:vercel": "npm run clean && tsc && npm start",
+		"lint": "eslint --ext .js,.ts .",
+		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+		"build": "npm run clean && tsc",
+		"dev": "npx nodemon src/index.ts",
+		"start": "node dist/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"type": "module",
+	"dependencies": {
+		"@apollo/datasource-rest": "^6.0.0",
+		"@apollo/server": "^4.7.1",
+		"@graphql-tools/merge": "9.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"graphql": "^16.6.0"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.13",
+		"@types/node": "^20.2.5",
+		"@typescript-eslint/eslint-plugin": "^5.59.8",
+		"@typescript-eslint/parser": "^5.59.8",
+		"eslint": "^8.41.0",
+		"eslint-config-prettier": "^8.8.0",
+		"nodemon": "^2.0.22",
+		"prettier": "^2.8.8",
+		"ts-node": "^10.9.1",
+		"typescript": "^5.0.4"
+	}
 }

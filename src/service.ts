@@ -1,107 +1,71 @@
-import { RESTDataSource } from "@apollo/datasource-rest";
-import { IFetchAll, IResponse } from "./types/FetchAll";
-import LRUCache from "lru-cache";
+import { RESTDataSource } from '@apollo/datasource-rest';
+import { IFetchAll } from './types/FetchAll';
+import LRUCache from 'lru-cache';
 
-export const BASE_URL = "https://swapi.dev/api/";
+export const BASE_URL = 'https://swapi.dev/api/';
 
 export default class SwapiAPI extends RESTDataSource {
-  private cache: LRUCache<string, any>;
+	private cache: LRUCache<string, string>;
+	isCached: boolean;
 
-  constructor() {
-    super();
-    this.baseURL = BASE_URL;
-    this.cache = new LRUCache({ max: 500 });
-  }
+	constructor() {
+		super();
+		this.baseURL = BASE_URL;
+		this.cache = new LRUCache({ max: 500 });
+		this.isCached = false;
+	}
 
-  getCache = async (url: string) => {
-    const fullUrl = url.includes(BASE_URL) ? url : `${BASE_URL}${url}`;
-    if (this.cache.has(fullUrl)) {
-      return this.cache.get(fullUrl);
-    }
+	getCache = async (url: string) => {
+		const fullUrl = url.includes(BASE_URL) ? url : `${BASE_URL}${url}`;
+		if (this.cache.has(fullUrl)) {
+			this.isCached = true;
+			return this.cache.get(fullUrl);
+		}
 
-    const data = await this.get(url);
+		const data = await this.get(url);
 
-    this.cache.set(fullUrl, data);
+		this.cache.set(fullUrl, data);
+		this.isCached = false;
+		return data;
+	};
 
-    return data;
-  };
+	resolveArrayofUrls = async (urls: string[]) =>
+		await Promise.all(
+			urls.map(async (url: string) => await this.getCache(url))
+		);
 
-  checkArrayOfStrings = (arr: any[]) => {
-    if (!arr.length) return false;
-    return arr.every(
-      (item) => typeof item === "string" && item.includes(BASE_URL),
-    );
-  };
+	getAll = async (url: string, { page = 1, next }: IFetchAll) => {
+		if (next) {
+			return await this.getCache(next);
+		}
 
-  getAllUrlsAndFetch = async (data: IResponse) => {
-    const { results } = data;
+		const urlWithPage = `${url}?page=${page}`;
 
-    await Promise.allSettled(
-      results.map(async (result) => {
-        if (!result) return;
-        await Promise.allSettled(
-          Object.entries(result).map(async ([key, value]) => {
-            if (key === "url") return;
+		const data = await this.get(urlWithPage);
 
-            if (Array.isArray(value) && this.checkArrayOfStrings(value)) {
-              if (key === "starships") {
-                const response = await Promise.allSettled(
-                  value.map(async (url) => {
-                    return await this.getCache(url);
-                  }),
-                );
-                result[key] = response.map((res) => {
-                  if (res.status === "fulfilled") {
-                    return res.value;
-                  } else {
-                    throw res.reason;
-                  }
-                });
-              }
-            }
+		this.cache.set(urlWithPage, data);
+		data.isCached = this.isCached;
 
-            if (typeof value === "string" && value.includes(BASE_URL)) {
-              result[key] = await this.getCache(value);
-            }
-          }),
-        );
-      }),
-    );
-  };
+		return data;
+	};
 
-  getAll = async (url: string, { page = 1, next }: IFetchAll) => {
-    if (next) {
-      return await this.getCache(next);
-    }
+	allPeople = async (args: IFetchAll) => await this.getAll('people', args);
 
-    const urlWithPage = `${url}?page=${page}`;
+	async person(id: number) {
+		return await this.getCache(`people/${id}`);
+	}
 
-    const data = await this.get(urlWithPage);
+	allPlanets = async (args: IFetchAll) => await this.getAll('planets', args);
 
-    await this.getAllUrlsAndFetch(data);
+	async planet(id: number) {
+		return await this.getCache(`planets/${id}`);
+	}
 
-    this.cache.set(`people?page=${page}`, data);
+	async allStarships() {
+		return await this.getCache('starships');
+	}
 
-    return data;
-  };
-
-  allPeople = async (args: IFetchAll) => await this.getAll("people", args);
-
-  async person(id: number) {
-    return await this.getCache(`people/${id}`);
-  }
-
-  allPlanets = async (args: IFetchAll) => await this.getAll("planets", args);
-
-  async planet(id: number) {
-    return await this.getCache(`planets/${id}`);
-  }
-
-  async allStarships() {
-    return await this.getCache("starships");
-  }
-
-  async starship(id: number) {
-    return await this.getCache(`starships/${id}`);
-  }
+	async starship(id: number) {
+		return await this.getCache(`starships/${id}`);
+	}
 }
