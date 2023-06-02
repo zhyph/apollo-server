@@ -2,6 +2,13 @@
 
 Projeto criado com finalidade de utilizar GraphQL para fazer request á [Swapi](https://swapi.dev/) Rest API.
 
+## Como fazer deploy?
+Uso vercel para fazer deploy, teoricamente para você subir esse projeto na vercel vai ser necessário somente dois passos (caso já se tenha uma conta na vercel):
+1. `npm i -g vercel`
+2. `vercel`
+
+E então seguir os passos que o CLI apresenta para você e seu projeto deve estar funcionando.
+
 ## Como usar?
 
 Para rodar o projeto localmente é necessário rodar `npm i` e em seguida para iniciar o servidor local `npm run dev`.
