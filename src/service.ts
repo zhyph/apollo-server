@@ -22,11 +22,18 @@ export default class SwapiAPI extends RESTDataSource {
 			this.isCached = true;
 			return this.cache.get(fullUrl);
 		}
-
-		const data = await this.get(url);
-
-		this.cache.set(fullUrl, data);
-		this.isCached = false;
+		let data,
+			hasError = false;
+		try {
+			data = await this.get(url);
+		} catch (error) {
+			data = null;
+			hasError = true;
+		}
+		if (!hasError) {
+			this.cache.set(fullUrl, data);
+			this.isCached = false;
+		}
 		return data;
 	};
 
