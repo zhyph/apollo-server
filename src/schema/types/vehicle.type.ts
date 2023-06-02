@@ -1,5 +1,5 @@
-const Starship = `#graphql
-  type Starship {
+const Vehicle = `#graphql  
+  type Vehicle {
     name: String
     model: String
     manufacturer: String
@@ -10,9 +10,7 @@ const Starship = `#graphql
     passengers: String
     cargo_capacity: String
     consumables: String
-    hyperdrive_rating: String
-    MGLT: String
-    starship_class: String
+    vehicle_class: String
     created: String
     edited: String
     url: String
@@ -20,18 +18,18 @@ const Starship = `#graphql
     pilots: [Person]
   }
 
-  type Starships {
-    isCached: Boolean
+  type Vehicles {
+    isCached: Boolean  
     count: Int
     next: String
     previous: String
-    results: [Starship]
+    results: [Vehicle]
   }
 
   type Query {
-    allStarships: Starships
-    starship(id: Int!): Starship
-  }
+    vehicle(id: Int!): Vehicle
+    allVehicles(page: Int): Vehicles
+  } 
 `;
 
-export default Starship;
+export default Vehicle;

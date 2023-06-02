@@ -1,5 +1,5 @@
 import { RESTDataSource } from '@apollo/datasource-rest';
-import { IFetchAll } from './types/FetchAll';
+import { IFetchAll } from './types/Service';
 import LRUCache from 'lru-cache';
 
 export const BASE_URL = 'https://swapi.dev/api/';
@@ -15,7 +15,8 @@ export default class SwapiAPI extends RESTDataSource {
 		this.isCached = false;
 	}
 
-	getCache = async (url: string) => {
+	getCache = async (url?: string) => {
+		if (!url) return null;
 		const fullUrl = url.includes(BASE_URL) ? url : `${BASE_URL}${url}`;
 		if (this.cache.has(fullUrl)) {
 			this.isCached = true;
@@ -51,21 +52,26 @@ export default class SwapiAPI extends RESTDataSource {
 
 	allPeople = async (args: IFetchAll) => await this.getAll('people', args);
 
-	async person(id: number) {
-		return await this.getCache(`people/${id}`);
-	}
+	person = async (id: number) => await this.getCache(`people/${id}`);
 
 	allPlanets = async (args: IFetchAll) => await this.getAll('planets', args);
 
-	async planet(id: number) {
-		return await this.getCache(`planets/${id}`);
-	}
+	planet = async (id: number) => await this.getCache(`planets/${id}`);
 
-	async allStarships() {
-		return await this.getCache('starships');
-	}
+	allFilms = async (args: IFetchAll) => await this.getAll('films', args);
 
-	async starship(id: number) {
-		return await this.getCache(`starships/${id}`);
-	}
+	film = async (id: number) => await this.getCache(`films/${id}`);
+
+	allSpecies = async (args: IFetchAll) => await this.getAll('species', args);
+
+	specie = async (id: number) => await this.getCache(`species/${id}`);
+
+	allVehicles = async (args: IFetchAll) => await this.getAll('vehicles', args);
+
+	vehicle = async (id: number) => await this.getCache(`vehicles/${id}`);
+
+	allStarships = async (args: IFetchAll) =>
+		await this.getAll('starships', args);
+
+	starship = async (id: number) => await this.getCache(`starships/${id}`);
 }

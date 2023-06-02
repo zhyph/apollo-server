@@ -10,17 +10,40 @@ const Person = {
 		person: (_: object, args: { id: number }, { swapiAPI }: IContext) =>
 			swapiAPI.person(args.id),
 	},
-	Person: {
-		starships: async (
-			parent: { starships: string[] },
+	Film: {
+		characters: async (
+			parent: { characters: string[] },
 			_: object,
 			{ swapiAPI }: IContext
-		) => swapiAPI.resolveArrayofUrls(parent.starships),
-		homeworld: async (
-			parent: { homeworld: string },
+		) => swapiAPI.resolveArrayofUrls(parent.characters),
+	},
+	Vehicle: {
+		pilots: async (
+			parent: { pilots: string[] },
 			_: object,
 			{ swapiAPI }: IContext
-		) => swapiAPI.getCache(parent.homeworld),
+		) => swapiAPI.resolveArrayofUrls(parent.pilots),
+	},
+	Starship: {
+		pilots: async (
+			parent: { pilots: string[] },
+			_: object,
+			{ swapiAPI }: IContext
+		) => swapiAPI.resolveArrayofUrls(parent.pilots),
+	},
+	Specie: {
+		people: async (
+			parent: { people: string[] },
+			_: object,
+			{ swapiAPI }: IContext
+		) => swapiAPI.resolveArrayofUrls(parent.people),
+	},
+	Planet: {
+		residents: async (
+			parent: { residents: string[] },
+			_: object,
+			{ swapiAPI }: IContext
+		) => swapiAPI.resolveArrayofUrls(parent.residents),
 	},
 };
 

@@ -13,12 +13,12 @@ const Person = `#graphql
     edited: String
     url: String
     starships: [Starship]
-    vehicles: [String]
-    species: [String]
-    films: [String]
+    vehicles: [Vehicle]
+    species: [Specie]
+    films: [Film]
   }
 
-  type AllPeople {
+  type People {
     isCached: Boolean  
     count: Int
     next: String
@@ -28,7 +28,7 @@ const Person = `#graphql
 
   type Query {
     person(id: Int!): Person
-    allPeople(page: Int): AllPeople
+    allPeople(page: Int): People
   } 
 `;
 

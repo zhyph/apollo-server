@@ -12,11 +12,12 @@ const Planet = `#graphql
     created: String
     edited: String
     url: String
-    films: [String]
-    residents: [String]
+    films: [Film]
+    residents: [Person]
   }
 
   type Planets {
+    isCached: Boolean
     count: Int
     next: String
     previous: String
